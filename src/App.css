@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+canvas {
+  border: 3px solid #00ffff;
+  box-shadow: 0 0 30px #00ffff, 0 0 60px #00ffff;
+  background: #000;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.menu {
+  text-align: center;
+  color: #00ffff;
+  font-family: 'Courier New', monospace;
+  padding: 40px;
+  border: 3px solid #00ffff;
+  background: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 30px #00ffff;
+}
+
+.title {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  text-shadow: 
+    0 0 10px #00ffff,
+    0 0 20px #00ffff,
+    0 0 30px #00ffff,
+    0 0 40px #00ffff;
+  animation: pulse 2s infinite;
+  letter-spacing: 8px;
+}
+
+.game-over {
+  color: #ff00ff;
+  text-shadow: 
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 30px #ff00ff;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+  letter-spacing: 3px;
+}
+
+.neon-button {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 15px 40px;
+  margin: 15px;
+  background: transparent;
+  color: #00ffff;
+  border: 3px solid #00ffff;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transition: all 0.3s;
+  box-shadow: 
+    0 0 10px #00ffff,
+    inset 0 0 10px #00ffff;
+}
+
+.neon-button:hover {
+  background: #00ffff;
+  color: #000;
+  box-shadow: 
+    0 0 20px #00ffff,
+    0 0 40px #00ffff,
+    inset 0 0 20px #00ffff;
+  transform: scale(1.05);
+}
+
+.neon-button.secondary {
+  color: #ff00ff;
+  border-color: #ff00ff;
+  box-shadow: 
+    0 0 10px #ff00ff,
+    inset 0 0 10px #ff00ff;
+}
+
+.neon-button.secondary:hover {
+  background: #ff00ff;
+  color: #000;
+  box-shadow: 
+    0 0 20px #ff00ff,
+    0 0 40px #ff00ff,
+    inset 0 0 20px #ff00ff;
+}
+
+.instructions {
+  margin-top: 30px;
+  font-size: 1.2rem;
+  line-height: 2;
+  color: #ffff00;
+  text-shadow: 0 0 10px #ffff00;
+}
+
+.instructions p {
+  margin: 10px 0;
+}
+
+.final-score {
+  font-size: 2.5rem;
+  color: #ffff00;
+  text-shadow: 
+    0 0 10px #ffff00,
+    0 0 20px #ffff00;
+  margin: 20px 0;
+  letter-spacing: 4px;
+}
+
+.high-score {
+  font-size: 1.5rem;
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+  margin-top: 15px;
+  letter-spacing: 2px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px #00ffff,
+      0 0 20px #00ffff,
+      0 0 30px #00ffff,
+      0 0 40px #00ffff;
+  }
+  50% {
+    text-shadow: 
+      0 0 20px #00ffff,
+      0 0 30px #00ffff,
+      0 0 40px #00ffff,
+      0 0 50px #00ffff,
+      0 0 60px #00ffff;
+  }
+}
+
+/* Retro CRT Effect */
+.game-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 255, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 255, 255, 0.03) 3px
+    );
+  pointer-events: none;
+  z-index: 5;
+}
+
+.game-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
