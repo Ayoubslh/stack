@@ -7,14 +7,20 @@ function App() {
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
   const gameRef = useRef(null)
+  const touchStartX = useRef(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext('2d')
-    canvas.width = 800
-    canvas.height = 600
+    
+    // Responsive canvas sizing
+    const isMobileDevice = window.innerWidth < 768
+    setIsMobile(isMobileDevice)
+    canvas.width = isMobileDevice ? Math.min(window.innerWidth - 20, 600) : 800
+    canvas.height = isMobileDevice ? window.innerHeight - 100 : 600
 
     // Game state
     const game = {
@@ -427,6 +433,29 @@ function App() {
       animationId = requestAnimationFrame(gameLoop)
     }
 
+    // Touch controls for mobile
+    function handleTouchStart(e) {
+      e.preventDefault()
+      touchStartX.current = e.touches[0].clientX
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault()
+      if (!touchStartX.current) return
+      
+      const touchX = e.touches[0].clientX
+      const rect = canvas.getBoundingClientRect()
+      const relativeX = touchX - rect.left
+      
+      // Move player to touch position
+      game.player.x = Math.max(0, Math.min(canvas.width - game.player.width, relativeX - game.player.width / 2))
+    }
+
+    function handleTouchEnd(e) {
+      e.preventDefault()
+      touchStartX.current = 0
+    }
+
     // Keyboard controls
     function handleKeyDown(e) {
       game.keys[e.key] = true
@@ -436,12 +465,18 @@ function App() {
       game.keys[e.key] = false
     }
 
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false })
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false })
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: false })
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('keyup', handleKeyUp)
 
     gameLoop()
 
     return () => {
+      canvas.removeEventListener('touchstart', handleTouchStart)
+      canvas.removeEventListener('touchmove', handleTouchMove)
+      canvas.removeEventListener('touchend', handleTouchEnd)
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('keyup', handleKeyUp)
       cancelAnimationFrame(animationId)
@@ -480,7 +515,7 @@ function App() {
               START GAME
             </button>
             <div className="instructions">
-              <p>← → or A D to move</p>
+              <p>{isMobile ? 'Touch and drag to move' : '← → or A D to move'}</p>
               <p>Dodge falling shapes!</p>
               <p className="high-score">HIGH SCORE: {highScore}</p>
             </div>
